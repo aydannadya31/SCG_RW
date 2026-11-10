@@ -1,0 +1,6 @@
+{
+  "name": "SesliCevir Pro - Ses Kaydı & Çeviri",
+  "description": "Profesyonel ses kaydı, konuşmayı metne dönüştürme, çok dilli çeviri, sesli okuma ve bulut yedekleme uygulaması.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
