@@ -18,12 +18,18 @@ import {
 } from 'lucide-react';
 import { AppSettings } from '../types';
 import { SUPPORTED_LANGUAGES } from '../utils/languages';
+import { VersionState } from '../utils/version';
+import { QrCode, Download, RefreshCw, Globe } from 'lucide-react';
 
 interface SettingsRoadmapViewProps {
   settings: AppSettings;
   onUpdateSettings: (newSettings: Partial<AppSettings>) => void;
   isPhoneMode: boolean;
   onTogglePhoneMode: () => void;
+  versionState: VersionState;
+  onSimulateUpdate: (type: 'patch' | 'minor' | 'major') => void;
+  onOpenDownloadModal: () => void;
+  onOpenLandingPage: () => void;
 }
 
 export const SettingsRoadmapView: React.FC<SettingsRoadmapViewProps> = ({
@@ -31,6 +37,10 @@ export const SettingsRoadmapView: React.FC<SettingsRoadmapViewProps> = ({
   onUpdateSettings,
   isPhoneMode,
   onTogglePhoneMode,
+  versionState,
+  onSimulateUpdate,
+  onOpenDownloadModal,
+  onOpenLandingPage,
 }) => {
   return (
     <div className="flex-1 w-full h-full overflow-y-auto px-4 py-5 flex flex-col space-y-5">
@@ -43,6 +53,61 @@ export const SettingsRoadmapView: React.FC<SettingsRoadmapViewProps> = ({
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Uygulama tercihleri, sistem mimarisi ve ölçeklenebilir gelişim planı.
         </p>
+      </div>
+
+      {/* Sürüm Bilgisi & QR Kod İndirme Kartı */}
+      <div className="p-4 rounded-3xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-lg space-y-3 border border-indigo-500/20">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+            <span className="text-xs font-bold uppercase tracking-wider text-indigo-200">
+              Uygulama Sürümü
+            </span>
+          </div>
+          <span className="font-mono text-xs font-bold px-2 py-0.5 rounded-full bg-white/10 text-white border border-white/20">
+            Build #{versionState.buildNumber}
+          </span>
+        </div>
+
+        <div className="flex items-baseline justify-between">
+          <div>
+            <div className="text-2xl font-extrabold font-mono tracking-tight">
+              v{versionState.currentVersion}
+            </div>
+            <div className="text-[11px] text-indigo-200">
+              Son Güncelleme: {versionState.lastUpdated}
+            </div>
+          </div>
+
+          {/* Simulate version update */}
+          <button
+            onClick={() => onSimulateUpdate('patch')}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/15 hover:bg-white/25 text-white text-xs font-semibold transition-colors cursor-pointer"
+            title="Yeni yama sürümünü simüle et (+0.0.1)"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            <span>Sürüm Güncelle (+0.0.1)</span>
+          </button>
+        </div>
+
+        {/* Action buttons: Web Page & QR Download */}
+        <div className="grid grid-cols-2 gap-2 pt-1 border-t border-white/10">
+          <button
+            onClick={onOpenDownloadModal}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-bold text-xs transition-colors cursor-pointer shadow-md"
+          >
+            <QrCode className="w-3.5 h-3.5" />
+            <span>Telefona İndir (QR)</span>
+          </button>
+
+          <button
+            onClick={onOpenLandingPage}
+            className="flex items-center justify-center gap-1.5 py-2 px-3 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-xs transition-colors cursor-pointer"
+          >
+            <Globe className="w-3.5 h-3.5" />
+            <span>Web Tanıtım Sayfası</span>
+          </button>
+        </div>
       </div>
 
       {/* 1. App Preferences Section */}
